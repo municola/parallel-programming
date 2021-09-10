@@ -1,0 +1,31 @@
+Analyzing Locks
+----------------------------------
+a)  They can never use the spoon, because the both pass the spoon if the other is hungry before they eat, and both are
+	hungry at the start. So there (-> Starvation)
+	
+	But as shown in the state-space diagram below there is mutual exclusion:
+	state: [P, Q, ishungryP, inhungryQ, SpoonOwner]
+	sections: P1, CS, P2
+								
+							    ----> 
+			[p1,q1,true,true,p]		  [p1,q1,true,true,q]		
+								<----
+								
+b)  We have to prevent the starvation. So you can eat once when you are hungry and have the spoon. After that you have to 
+	give back the spoon.
+	
+	
+Atomic Operations
+----------------------------------
+a)	We calculate the next random number. And the method returns only if we acutally saved the new value. So if we didnt
+	save the new value we dont give the result back but try again till we could save the result in the state. So no harm 
+	is done till now. Lets look at the storing method. If an other thread was quicker, it stored the result in the state,
+	so the compareAndSet method stops us from actually setting our new state and we h	ave to try again. So at every given
+	point in time, we hold the conditions for the randomSeedgenerator. We may computed more than we would have with locks
+	but we give the correct result.
+
+b)	The atomic is optimistic, while locks are pessimistic. For more threads the probability of an other thread being faster
+	and we have to recalculate the random number. We use TES instead of CAS. 
+	
+c)	For low probabilities of a variable a being changed while computing a value b that you want to store in the variable a. 
+

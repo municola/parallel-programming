@@ -1,0 +1,42 @@
+Dining Philosophers
+-------------------------------------
+a) 	Yes if every Philosopher take the fork to their immediate right (in any order you want). Afterwards
+	every Philosopher want to get their immediate left fork, but nobody can take it since it was the immediate
+	right fork of the left Philosopher. Hence no Philosopher can ever take the second fork and no Philosopher can eat 
+	and they will starve to death. 
+	
+	
+b) 	Be numerate the forks from 1 to 5. Every Philosopher wants to first get the fork with a smaller number. If he gets it
+	then he can try to get the next. 
+	Proof:	Let x be an arbitrary Philosopher. (fork left: fl, fork right: fr, fl > fr)
+			case 1: x gets the fr: 
+				case 1a x gets also fl: he can eat :)
+				case 1b x doesnt get fl: an other Philosopher y has it. 
+						case 1ba: y is not Philosopher 1. Go to case 1 with x = y. After y eats, x can eat :)
+						case 1bb: y is Philosopher 1. For Philosopher 1, fr is the higher fork so he has also fl and can eat.
+								  then afterwards the fork gets free and x can eat. :)
+			case 2: x doesnt get fr:
+				an other Philosopher y has it. y must have also his fr. so he can eat and then the 
+				fork is free again. Then x can take it and eat :)
+				
+			=> In all cases the Philosopher can eat. (If x is philosopher 1 its a bit special but works +-analog)
+			
+c) Maximum 2 (Philosopher 5 and 2 are ultra fast and instantly take fl and fr. => both can eat)
+   Minimum 1 (Every wants its lower fork. Since Philosopher1 and Philosopher2 want the same. Philosopher 1 loses.
+   			  Now Philosopher 5 can take its left since Philosopher 1 still wants the fork 1.
+   We can improve, if we can give away the fork if one is finished.
+
+
+Semaphores and Databases
+------------------------------------
+c) Variant 1: Using monitors with the wait and notifyAll functions
+   Variant 2: Go like one level deeper and implement is with using directly thread.wait/notifyAll etc. 
+   Variant 3: With a spin-wait. You dont go to "sleep" and be waken up by a notify,but actually check always the condition
+   			  till the condition is true. 
+   
+   Trade-Offs: Variante 1 and 2 are very similar. Since both use wait and notfiy both are more or less the same thing
+   			   in how they work, so the trade-Offs between Variante 1 and 2 is just, that Variante 2 is probably more
+   			   complicated to implement and will probably be buggy, but you have absolut conrol over everything. 
+   			   If we look at Variante 3 we realize that this approach is more primitive but more expensive since we are
+   			   constantly checking for the condition. 
+   			   => Variantes 1,2 are more advanced and more efficient while Variante 3 is simpler but more expensive.

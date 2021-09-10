@@ -1,0 +1,21 @@
+Benchmark results
+-----------------------------
+Course-grained: 23s
+Fine-grained: 17s
+Optimistic: 13s
+Lazy: 14s
+
+Test for optimistic locking and Test for Lazy locking fail sometimes with a Timelimit error, but in the Benchmarktest
+they always finish. Do you know why?
+Sometimes Lazy locking takes longer than optimistic Locking in the Benchmarktest. Is something wrong?
+
+
+In the meeting
+----------------------
+Hand-over-hand locking kommt in der Prüfung!
+Common fehler: 	newNode.next = current
+				predecessor.next = newNode
+				(so korrekt. andersrum gibt es eine nullpointerexception z.b thread b läuft durch und nimmt schon
+				den pointer zu newNode, thread A hat aber den pointer bon newnode zu current noch nicht gesetze womit B
+				ins leere läuft.)
+contains braucht locks bei allen ausser lazy.

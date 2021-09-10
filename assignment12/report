@@ -1,0 +1,54 @@
+Assignment 12
+======================================
+
+Exercise 1
+----------
+To proof: wait-free => lock-free 
+We proof: ¬lock-free => ¬wait-free
+
+¬lock-free <=> locked => a thread could potentially have the lock and go to sleep with the lock for an unlimited time => ¬wait-free
+
+Exercise 2
+----------
+To proof: In wait-free there are only a finite number of bivalent states. 
+
+In a wait-free algo. each thread has to have its value after a finite number of steps. So there can also only be a certain amount
+of bivalent states in the consensus since we only get the result if everyone has agreed, hence have a universal state. 
+
+Exercise 3
+----------
+The Prisoner that gets in the room at the first day is the leader. Only he can make the assertion that everyone has been in the prison.
+We call our Leader prisoner A and all oder ¬A.
+
+Prisoner A: Sets the lightbulb to 1 at the beginning.
+			Has a count == 0 at the beginning.
+			When he enters the room a second/third... time he does the following:
+				- if the lightbulb is 0: count++, switch lightbulb to 1 again
+				- else do nothing
+			When leaving the room he does:
+				- if count == 100 say: "all prisoners have been to the room"
+				- else say nothing
+			
+Prisoner ¬A: 	Has a count == 1 at the beginning.
+				When entering the room he does:
+					- if lightbulb is 1 && count == 1 do: set lightbulb to 0 and count--
+					- else do nothing 
+			
+Logic begin: 	A knows someone new has been to the room, if he sees the lightbulb == 0. Since ¬A only sets the lightbulb to 0 once,
+				A doesnt count people twice and since ¬A only sets the lightbulb to 0 if its 1, no two people use their signal till
+				A has seen one.
+				
+Exercise 4
+----------
+Atomic register a1, a2 both set to 0
+
+while(true) {
+	if (a2.get() == 0){
+		a1 = thisThread.input;
+		a2.set(1)
+	}
+	thisThread.output = a1;
+}
+
+=> The first Thread/Process can store its data in a1, the other one has to accept it.
+			

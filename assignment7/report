@@ -1,0 +1,60 @@
+Fancy Report Sheet
+========================================
+
+Task 1
+----------------------------------------
+In transferMoney we have the line:
+from.setBalance(from.getBalance() - amount);
+
+Actually this isnt one instruction but acutally 3:
+(1) int balance = from.getBalance();
+(2) int NewBalance = balamce - amount;
+(3) from.setBalance(NewBalance);
+
+Now we have Thread1 (T1) and Thread2 (T2) and T1 writes to account3000 from accountX,
+T2 writes to account3000 from accountY 6022.-
+
+If we have the bad interleaving: 
+T1-(1)
+T2-(1)
+T2-(2)
+T2-(3)
+T1-(2)
+T1-(3)
+
+=> T1 sets the balance of account3000 to NewBalance that doesnt take into account that account3000 got 6022 more.
+
+
+Task 2
+-----------------------------------------
+Synchronized lets only one thread at a time use the transferMoney() method. So the whole parallelism is more or
+less lost, since you want to use the transferMoney() method even if an other thread is using it. Additionally synchronized
+is  an expensive operation, because you also need time to release and take the lock
+
+Instead of locking the transfermethod we want to lock the actual two accounts that should be updated. This way we can 
+still use the transferMoney method with other accounts, and the actual two accounts dont get bad interleavings.
+
+
+Task 3
+-----------------------------------------
+Question 1) No it isnt a problem. Addition and Substraction are assoziative. And the methods used in loseMoney and getMoney
+			have all the same lock.
+Question 2) I looked that account1 doesnt wait on an other account to be unlocked. So it never gets stuck.
+
+
+Task 4
+-----------------------------------------
+Question 3) Lets assume we have accounts 1-10 and we now sum the balances. Starting with account 1, then account 2, ... , 10.
+			But when we are at account 4 a transaction starts between account 1 and account 10. And this transaction is finished 
+			when we reach account 7. If we then sum eventually the balance of account 10 we get the changed (wrong) balance 
+			for the time we started counting.
+Question 4) The plan is to lock all transactions till I finished the counting. But I dont know how :(
+Question 5) Yes. We use the prefixsum algorithm. 
+
+
+My Questions
+-----------------------------------------
+- If I use synchronized instead of locks in Task 3 the programm is 4times faster. Why? Are locks less efficient than synchronized? 
+- For task 4 I would have liked to make an object that I lock when I use the sumAccounts method. And in the transferMoney method
+  check if the object is locked and if so wait till its unlocked. Is this a bad approach? Why? (And can you even do this? I havent
+  find a method to say to this thread wait till that lock is gone. And I think i can't use wait() and notify())

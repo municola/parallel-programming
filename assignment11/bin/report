@@ -1,0 +1,10 @@
+Questions
+--------------
+a) 	Lets say Thread A wants to update its Data, but 10000000 other threads with an older timestamp than A
+	also want to update. A always is to slow. So A doesnt make progress till these 100000000 Threads have
+	updated. For this scenario our code isn't wait-free
+	=> Not wait-free
+	
+b) 	Yes. And we can use the same mechanism!
+
+
